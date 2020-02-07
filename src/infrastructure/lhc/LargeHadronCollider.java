@@ -33,4 +33,12 @@ public class LargeHadronCollider {
     public Ring getRing() {
         return ring;
     }
+
+    public USP getUsp01() {
+        return usp01;
+    }
+
+    public USP getUsp02() {
+        return usp02;
+    }
 }

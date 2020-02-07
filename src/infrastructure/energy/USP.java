@@ -28,4 +28,7 @@ public class USP {
         return 0;
     }
 
+    public ArrayList<Battery> getBatteryArrayList() {
+        return batteryArrayList;
+    }
 }
