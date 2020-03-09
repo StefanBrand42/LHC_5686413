@@ -6,6 +6,7 @@ import infrastructure.*;
 import infrastructure.lhc.*;
 import infrastructure.security.CardDevice.*;
 import infrastructure.security.SecurityCenter;
+import persistenzlayer.PersistanceLayerDB;
 
 
 public class Application {
@@ -125,16 +126,43 @@ public class Application {
         ControlCenter.instance.addSubsriber(ring);
         ControlCenter.instance.addSubsriber(detector);
 
-        // erstellen der Protonen (Objekte der Klasse Proton
-        String pfadOrdnerProtonen = "data/";
-        building.getLargeHadronCollider().getRing().getProtonTrap01().loadData(pfadOrdnerProtonen);
-        building.getLargeHadronCollider().getRing().getProtonTrap02().loadData(pfadOrdnerProtonen);
+
+        if (Configuration.instance.loadFromDatabase == false){
+            // erstellen der Protonen (Objekte der Klasse Proton
+            String pfadOrdnerProtonen = "data/";
+            building.getLargeHadronCollider().getRing().getProtonTrap01().loadData(pfadOrdnerProtonen);
+            building.getLargeHadronCollider().getRing().getProtonTrap02().loadData(pfadOrdnerProtonen);
 
 
 
-        // Start Kollosion
-        ControlCenter.instance.startExperiment(InitialEnergy.startEnergie50k);
-        //ControlCenter.instance.startExperiment(InitialEnergy.startEnergie50k,ExperimentScope.ES5);
+            // Start Kollosion
+            ControlCenter.instance.startExperiment(InitialEnergy.startEnergie50k);
+            //ControlCenter.instance.startExperiment(InitialEnergy.startEnergie50k,ExperimentScope.ES5);
+            
+            // Experimente in DadabadeLaden
+            // Zugriff Database
+            PersistanceLayerDB.instance.setupConnection();
+            // löschen Tabelle
+            PersistanceLayerDB.instance.dropTableExperimentBlock();
+            //Tabellen anlegen
+            PersistanceLayerDB.instance.createTableExperiment();
+            PersistanceLayerDB.instance.createTableBlock();
+
+            // Daten rein schreiben
+            int x = largeHadronCollider.getRing().getDetector().getExperimentList().size();
+            System.out.println(x);
+            for (int i = 0; i < largeHadronCollider.getRing().getDetector().getExperimentList().size() ; i++) {
+                PersistanceLayerDB.instance.insert(largeHadronCollider.getRing().getDetector().getExperimentList().get(i));
+            }
+
+            
+            
+        }else {
+            
+        }
+
+
+
         // Start Analyse
         ControlCenter.instance.startAnalyse();
 

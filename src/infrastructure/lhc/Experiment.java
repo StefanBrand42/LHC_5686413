@@ -90,7 +90,12 @@ public class Experiment implements IExperiment {
         return blockArrayList;
     }
 
+
+
     public void setHiggsBosonFound(boolean higgsBosonFound) {
         isHiggsBosonFound = higgsBosonFound;
     }
+
+
+
 }
