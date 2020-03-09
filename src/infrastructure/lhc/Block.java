@@ -12,6 +12,12 @@ public class Block {
         uuid = UUID.randomUUID();
     }
 
+    // für aus Datenbank erstellen
+    public Block(UUID uuid, String structure) {
+        this.uuid = uuid;
+        this.structure = structure;
+    }
+
     public UUID getUuid() {
         return uuid;
     }

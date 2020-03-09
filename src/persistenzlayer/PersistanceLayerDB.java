@@ -5,6 +5,8 @@ import infrastructure.lhc.Experiment;
 import infrastructure.lhc.IExperiment;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Stack;
 import java.util.UUID;
 
 public enum PersistanceLayerDB implements  IPersistanceLayer {
@@ -176,32 +178,75 @@ public enum PersistanceLayerDB implements  IPersistanceLayer {
         update(sqlStringStringBuilder.toString());
     }
 
-
-
-
-    public void executeSQLStatement(String sqlStatement, int numberOfColumns) {
+    public Stack<Experiment> executeSQLStatement(String sqlStatement) {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlStatement);
+            Stack<Experiment> experimentStack = new Stack<>();
 
             while (resultSet.next()) {
-                if (numberOfColumns == 1) {
-                    System.out.println(resultSet.getString(1));
-                } else if (numberOfColumns == 2) {
-                    System.out.println(resultSet.getString(1) + " - " + resultSet.getString(2));
+                UUID experimentUUID = UUID.fromString(resultSet.getString(1));
+                String experimentDateTimeStamp = resultSet.getString(2);
+                Boolean experimentIsHiggsFound = resultSet.getBoolean(3);
+                int idProton1 = resultSet.getInt(4);
+                int idProton2 = resultSet.getInt(5);
+                ArrayList<Block> blockArrayList = new ArrayList<>();
+                Statement statement2 = connection.createStatement();
+                ResultSet resultSetBlock = statement2.executeQuery("SELECT * FROM block");
+                while (resultSetBlock.next()){
+                    UUID blockExperimentUUID = UUID.fromString(resultSetBlock.getString(3));
+                    if (blockExperimentUUID.equals(experimentUUID)){
+                        UUID blockUUID = UUID.fromString(resultSetBlock.getString(1));
+                        String structue = resultSetBlock.getString(2);
+                        Block block = new Block(blockUUID,structue);
+                        blockArrayList.add(block);
+                    }
                 }
+                Experiment experiment = new Experiment(experimentUUID,experimentDateTimeStamp,experimentIsHiggsFound,idProton1,idProton2,blockArrayList);
+                experimentStack.push(experiment);
             }
-
             resultSet.close();
+            return experimentStack;
         } catch (SQLException sqle) {
             System.out.println(sqle.getMessage());
+            return null;
         }
+
+
     }
 
-    public void select() {
-        executeSQLStatement("SELECT * FROM customer order by name", 2);
-        System.out.println();
+
+
+
+
+
+//    public void executeSQLStatement(String sqlStatement, int numberOfColumns) {
+//        try {
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery(sqlStatement);
+//
+//            while (resultSet.next()) {
+//                if (numberOfColumns == 1) {
+//                    System.out.println(resultSet.getString(1));
+//                } else if (numberOfColumns == 2) {
+//                    System.out.println(resultSet.getString(1) + " - " + resultSet.getString(2));
+//                }
+//            }
+//
+//            resultSet.close();
+//        } catch (SQLException sqle) {
+//            System.out.println(sqle.getMessage());
+//        }
+//    }
+    public Stack<Experiment> select() {
+        Stack<Experiment> stack= executeSQLStatement("SELECT * FROM experiment");
+       return stack;
     }
+
+//    public void select() {
+//        executeSQLStatement("SELECT * FROM customer order by name", 2);
+//        System.out.println();
+//    }
 
     public void shutdown() {
         System.out.println("--- shutdown");

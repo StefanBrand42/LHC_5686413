@@ -18,7 +18,15 @@ public class Experiment implements IExperiment {
     // fuer die Composition
     private ArrayList<Block> blockArrayList;
 
-
+    // für aus der Datenbank erstellen
+    public Experiment(UUID uuid, String dateTimeStamp, boolean isHiggsBosonFound, int idProton1, int idProton2, ArrayList<Block> blockArrayList) {
+        this.uuid = uuid;
+        this.dateTimeStamp = dateTimeStamp;
+        this.isHiggsBosonFound = isHiggsBosonFound;
+        this.idProton1 = idProton1;
+        this.idProton2 = idProton2;
+        this.blockArrayList = blockArrayList;
+    }
 
     public Experiment(Proton proton01, Proton proton02) {
         uuid = UUID.randomUUID();

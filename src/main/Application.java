@@ -8,6 +8,9 @@ import infrastructure.security.CardDevice.*;
 import infrastructure.security.SecurityCenter;
 import persistenzlayer.PersistanceLayerDB;
 
+import java.awt.*;
+import java.util.Stack;
+
 
 public class Application {
 
@@ -133,8 +136,6 @@ public class Application {
             building.getLargeHadronCollider().getRing().getProtonTrap01().loadData(pfadOrdnerProtonen);
             building.getLargeHadronCollider().getRing().getProtonTrap02().loadData(pfadOrdnerProtonen);
 
-
-
             // Start Kollosion
             ControlCenter.instance.startExperiment(InitialEnergy.startEnergie50k);
             //ControlCenter.instance.startExperiment(InitialEnergy.startEnergie50k,ExperimentScope.ES5);
@@ -151,13 +152,24 @@ public class Application {
             // Daten rein schreiben
             int x = largeHadronCollider.getRing().getDetector().getExperimentList().size();
             System.out.println(x);
-            for (int i = 0; i < largeHadronCollider.getRing().getDetector().getExperimentList().size() ; i++) {
+            for (int i = 15; i < 20 ; i++) {
                 PersistanceLayerDB.instance.insert(largeHadronCollider.getRing().getDetector().getExperimentList().get(i));
             }
 
             
             
         }else {
+            // Zugriff Database
+            PersistanceLayerDB.instance.setupConnection();
+            Stack<Experiment> experimentStack = PersistanceLayerDB.instance.select();
+            IDector iDector = building.getLargeHadronCollider().getRing().getDetector();
+            int dd = experimentStack.size();
+            for (int i = 0; i <dd; i++) {
+                iDector.addExperiment(experimentStack.pop());
+            }
+
+
+
             
         }
 

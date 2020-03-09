@@ -6,7 +6,7 @@ import java.util.Properties;
 public enum Configuration {
     instance;
 
-    boolean loadFromDatabase = false;
+    boolean loadFromDatabase = true;
 
 
     String aesKey = "x7z99kvb6lU";
