@@ -42,4 +42,8 @@ public class ResearchGroup {
     public ArrayList<Researcher> getResearcherArrayList() {
         return researcherArrayList;
     }
+
+    public ArrayList<Workplace> getWorkplaceArrayList() {
+        return workplaceArrayList;
+    }
 }

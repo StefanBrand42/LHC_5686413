@@ -61,7 +61,7 @@ public class Reader extends CardDevice implements IReader {
         permissionList = idCard.getPermissionList();
         isLocked = idCard.isLocked();
         chipFingerAb = idCard.getChipFingerAb();
-        if(checkValidCard(validFrom, validUntil) && checkIris(irisStructure)&& checkPassword(idCard.getChip())&& (!isLocked) ){
+        if(checkValidCard(validFrom, validUntil) &&   (!isLocked) ){
             System.out.println("Karte ist für den MA gültig");
         }
         else{
@@ -80,7 +80,7 @@ public class Reader extends CardDevice implements IReader {
         irisStructure = idCard.getIrisStructure();
         permissionList = idCard.getPermissionList();
         isLocked = idCard.isLocked();
-        if(checkValidCard(validFrom, validUntil)&& (!isLocked)&& (!isLocked)){
+        if(checkValidCard(validFrom, validUntil)&& (!isLocked)){
             System.out.println("Karte ist für den Besucher gültig");
         } else{
             System.out.println("Karte ist für den Besucher ungültig!!!!!!!!!!");
@@ -99,7 +99,7 @@ public class Reader extends CardDevice implements IReader {
         permissionList = idCard.getPermissionList();
         isLocked = idCard.isLocked();
         chipFingerAb = idCard.getChipFingerAb();
-        if(checkValidCard(validFrom, validUntil)&& (!isLocked)&& (!isLocked) && checkPassword(idCard.getChip())){
+        if(checkValidCard(validFrom, validUntil)&& (!isLocked)&&  checkPassword(idCard.getChip())){
             System.out.println("Karte ist für den Besucher gültig");
         } else{
             System.out.println("Karte ist für den Besucher ungültig!!!!!!!!!!");
@@ -120,7 +120,7 @@ public class Reader extends CardDevice implements IReader {
     }
 
 
-    private boolean checkValidCard(Date validFrom, Date validUntil){
+    public boolean checkValidCard(Date validFrom, Date validUntil){
         Date now = new Date();
         if (now.compareTo(validFrom) >0 && now.compareTo(validUntil)<0){
             return true;

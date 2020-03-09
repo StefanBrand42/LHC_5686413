@@ -50,4 +50,8 @@ public enum ControlCenter {
     public void addWorkplce(Workplace workplace){
         workplaceArrayList.add(workplace);
     }
+
+    public ArrayList<Workplace> getWorkplaceArrayList() {
+        return workplaceArrayList;
+    }
 }
