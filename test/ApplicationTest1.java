@@ -43,7 +43,7 @@ public class ApplicationTest1 {
         detector.setRing(ring);
         ring.setDetector(detector);
         researchGroup = new ResearchGroup();
-        
+
     }
 
     @AfterEach
