@@ -1,5 +1,6 @@
 package main;
 
+import entwurfmuster5.*;
 import human_Resource.*;
 import human_Resource.HrDep.HRDepartment;
 import infrastructure.*;
@@ -9,6 +10,8 @@ import infrastructure.security.SecurityCenter;
 import persistenzlayer.PersistanceLayerDB;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 
@@ -177,6 +180,24 @@ public class Application {
 
         // Start Analyse
         ControlCenter.instance.startAnalyse();
+
+
+        // Entwurfmuster
+        LinkedList<IExperiment> iExperiments = building.getLargeHadronCollider().getRing().getDetector().getExperimentList();
+        IDateAnalystics dataAnalystics = new DataAnalystics();
+        for (int i = 0; i < iExperiments.get(0).getBlockArrayList().size(); i++) {
+            dataAnalystics.getBlock(iExperiments.get(0).getBlockArrayList().get(i).getStructure());
+        }
+        Analyser analyser1 = new Analyser1();
+        Analyser analyser2 = new Analyser2(analyser1);
+
+
+        for (Block block: dataAnalystics.getBlockMap().values()) {
+            analyser2.analyse(block);
+
+        }
+
+
 
 
 
